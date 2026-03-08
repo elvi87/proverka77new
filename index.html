@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ПРОВЕРКА77 — Онлайн проверка физ. лиц</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="home">
+  <header class="topbar">
+    <div class="container nav">
+      <a class="logo" href="index.html">ПРОВЕРКА77</a>
+      <nav>
+        <a href="#how">Как это работает</a>
+        <a href="articles.html">Статьи</a>
+        <a href="report.html">Пример отчёта</a>
+      </nav>
+      <button class="btn btn-outline" data-open-auth>Войти</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container card">
+      <h1>Быстрая проверка физических лиц</h1>
+      <p>Проверяем данные через открытые и легальные источники. Вы подтверждаете согласие на обработку персональных данных перед запуском проверки.</p>
+      <form id="searchForm" class="search-form">
+        <div class="grid-2">
+          <label>Фамилия
+            <input name="lastName" required placeholder="Иванов" />
+          </label>
+          <label>Имя
+            <input name="firstName" required placeholder="Иван" />
+          </label>
+          <label>Отчество
+            <input name="middleName" required placeholder="Иванович" />
+          </label>
+          <label>Дата рождения
+            <input name="birthDate" required type="date" />
+          </label>
+          <label>Регион
+            <select name="region" required>
+              <option value="">Выберите регион</option>
+              <option>Москва</option>
+              <option>Санкт-Петербург</option>
+              <option>Краснодарский край</option>
+              <option>Свердловская область</option>
+              <option>Республика Татарстан</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" name="consent" required />
+          Подтверждаю, что проверка выполняется с разрешения человека и согласия на обработку персональных данных.
+        </label>
+        <button class="btn btn-primary" type="submit">Проверить за 249 ₽</button>
+        <p id="formStatus" class="status"></p>
+      </form>
+    </section>
+
+    <section id="how" class="container section">
+      <h2>Кого и зачем проверять</h2>
+      <div class="cards-3">
+        <article class="card"><h3>Рынок аренды и услуг</h3><p>Проверка перед сделкой снижает риски и ускоряет принятие решений.</p></article>
+        <article class="card"><h3>Работа и бизнес</h3><p>Дополнительная проверка контрагентов и сотрудников перед сотрудничеством.</p></article>
+        <article class="card"><h3>Личная безопасность</h3><p>Проверка биографических и судебных сведений по доступным базам.</p></article>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2>Как заказать отчёт</h2>
+      <div class="card steps">
+        <ol>
+          <li>Заполните форму проверки и подтвердите согласие на обработку данных.</li>
+          <li>Авторизуйтесь или зарегистрируйтесь.</li>
+          <li>Оплатите 249 ₽ картой или через ЮMoney.</li>
+          <li>Получите отчёт в кабинете и скачайте PDF.</li>
+        </ol>
+        <a class="btn" href="checkout.html">Перейти к оплате</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>ПРОВЕРКА77</strong>
+        <p>Онлайн проверка физ. лиц</p>
+      </div>
+      <a href="#">Политика оператора</a>
+      <a href="#">Публичная оферта</a>
+      <a href="#">Бланк согласия</a>
+      <a href="articles.html">Статьи</a>
+      <a href="checkout.html">Как оплатить</a>
+      <a href="mailto:help@proverka77.online">Служба заботы: help@proverka77.online</a>
+    </div>
+  </footer>
+
+  <div class="modal" id="authModal" hidden>
+    <div class="modal-content card">
+      <button class="close" data-close-auth>✕</button>
+      <div class="tabs">
+        <button data-tab="register" class="active">Регистрация</button>
+        <button data-tab="login">Вход</button>
+        <button data-tab="reset">Сброс пароля</button>
+      </div>
+      <form data-pane="register" class="auth-pane">
+        <input type="email" required placeholder="Email" />
+        <input type="password" required placeholder="Пароль" />
+        <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+      </form>
+      <form data-pane="login" class="auth-pane hidden">
+        <input type="email" required placeholder="Email" />
+        <input type="password" required placeholder="Пароль" />
+        <button class="btn btn-primary" type="submit">Войти</button>
+      </form>
+      <form data-pane="reset" class="auth-pane hidden">
+        <input type="email" required placeholder="Email" />
+        <button class="btn btn-primary" type="submit">Сбросить пароль</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
