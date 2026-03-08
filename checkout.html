@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ПРОВЕРКА77 — Оплата отчёта</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="checkout">
+<header class="topbar"><div class="container nav"><a class="logo" href="index.html">ПРОВЕРКА77</a><nav><a href="dashboard.html">Кабинет</a><a href="report.html">Отчёт</a></nav></div></header>
+<main class="container section">
+  <h1>Как заказать отчёт</h1>
+  <div class="checkout-grid">
+    <section class="card">
+      <h2>Заказ №PVK-1024</h2>
+      <p>Проверка физического лица по указанным параметрам.</p>
+      <label>Промокод
+        <input id="promo" placeholder="Введите промокод" />
+      </label>
+      <button class="btn" id="applyPromo">Применить</button>
+      <p class="small">Доступные способы: банковская карта, ЮMoney.</p>
+    </section>
+    <aside class="card">
+      <h3>Итого</h3>
+      <p>Стоимость отчёта: <strong id="basePrice">249 ₽</strong></p>
+      <p>Скидка: <strong id="discount">0 ₽</strong></p>
+      <p class="total">К оплате: <strong id="finalPrice">249 ₽</strong></p>
+      <button class="btn btn-primary" id="payBtn">Оплатить</button>
+      <p id="payStatus" class="status"></p>
+    </aside>
+  </div>
+</main>
+<footer class="footer"><div class="container footer-grid"><a href="#">Политика оператора</a><a href="#">Публичная оферта</a><a href="#">Бланк согласия</a><a href="articles.html">Статьи</a><a href="#">Как оплатить</a><a href="mailto:help@proverka77.online">help@proverka77.online</a></div></footer>
+<script src="app.js"></script>
+</body>
+</html>
