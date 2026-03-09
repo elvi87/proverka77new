@@ -3,12 +3,17 @@
 Запрещено менять migrations/**, billing/**, prod-config/**.
 
 TITLE:
-Agent PR From Issue
+agent-task
 
 BODY:
 ### What should be implemented?
 
-Agent PR From Issue
+Привести страницы регистрации, входа и сброса пароля к единому стилю:
+- аккуратная форма, валидация, ошибки.
+- кнопки и поля в цветовой схеме проекта.
+- адаптив под mobile.
+Не менять migrations/**, billing/**, prod-config/**.
+
 
 ### Constraints
 
