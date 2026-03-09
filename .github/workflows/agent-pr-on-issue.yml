@@ -1,0 +1,73 @@
+name: Agent PR From Issue
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  generate-pr:
+    if: github.event.label.name == 'agent-task'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install aider
+        run: pip install aider-chat
+
+      - name: Build task from issue
+        run: |
+          cat > .github/agent/TASK.md <<'TASK'
+          Реализуй задачу из Issue ниже.
+          Соблюдай AGENTS.md.
+          Запрещено менять migrations/**, billing/**, prod-config/**.
+
+          TITLE:
+          ${{ github.event.issue.title }}
+
+          BODY:
+          ${{ github.event.issue.body }}
+          TASK
+
+      - name: Run coding agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AIDER_MODEL: openai/gpt-4.1
+        run: |
+          aider --yes-always --no-auto-commits --model "$AIDER_MODEL" --message-file .github/agent/TASK.md
+
+      - name: Guard forbidden paths
+        run: |
+          CHANGED="$(git diff --name-only)"
+          echo "$CHANGED"
+          if echo "$CHANGED" | grep -E '^(migrations/|billing/|prod-config/)'; then
+            echo "Forbidden paths changed"
+            exit 1
+          fi
+
+      - name: Create PR
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "feat(agent): ${{ github.event.issue.title }}"
+          title: "feat(agent): ${{ github.event.issue.title }}"
+          body: |
+            Automated PR from issue #${{ github.event.issue.number }}.
+          branch: "codex/issue-${{ github.event.issue.number }}-${{ github.run_id }}"
+          delete-branch: true
+
+      - name: Enable automerge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash

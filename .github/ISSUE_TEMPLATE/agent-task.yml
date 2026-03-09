@@ -1,0 +1,17 @@
+name: Agent Task
+description: Task for autonomous coding PR
+title: "[agent] "
+labels: ["agent-task"]
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: What should be implemented?
+      description: Describe expected behavior and acceptance criteria.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Optional paths/modules to include/exclude.

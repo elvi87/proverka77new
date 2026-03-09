@@ -1,0 +1,69 @@
+name: Agent Nightly PR
+
+on:
+  schedule:
+    - cron: "30 23 * * *" # 02:30 Europe/Moscow (UTC+3)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install aider
+        run: pip install aider-chat
+
+      - name: Build task
+        run: |
+          cat > .github/agent/TASK.md <<'TASK'
+          Выполни задачу из файла .github/agent/nightly-task.md.
+          Обязательно соблюдай правила из AGENTS.md.
+          Запрещено менять migrations/**, billing/**, prod-config/**.
+          Внеси изменения в код и подготовь всё к PR.
+          TASK
+
+      - name: Run coding agent
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AIDER_MODEL: openai/gpt-4.1
+        run: |
+          aider --yes-always --no-auto-commits --model "$AIDER_MODEL" --message-file .github/agent/TASK.md
+
+      - name: Guard forbidden paths
+        run: |
+          CHANGED="$(git diff --name-only)"
+          echo "$CHANGED"
+          if echo "$CHANGED" | grep -E '^(migrations/|billing/|prod-config/)'; then
+            echo "Forbidden paths changed"
+            exit 1
+          fi
+
+      - name: Create PR
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(agent): nightly improvements"
+          title: "chore(agent): nightly improvements"
+          body: |
+            Automated nightly PR.
+            - Schedule: daily 02:30 Moscow time
+            - Guardrails: AGENTS.md
+          branch: "codex/nightly-${{ github.run_id }}"
+          delete-branch: true
+
+      - name: Enable automerge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
