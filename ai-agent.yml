@@ -1,0 +1,18 @@
+name: Codex AI Developer
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ai-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: AI Agent Trigger
+        run: |
+          echo "AI Agent received task"
+          echo "${{ github.event.issue.title }}"
