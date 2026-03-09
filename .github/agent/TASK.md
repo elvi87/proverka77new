@@ -3,12 +3,17 @@
 Запрещено менять migrations/**, billing/**, prod-config/**.
 
 TITLE:
-Agent PR From Issue
+agent-task
 
 BODY:
 ### What should be implemented?
 
-Agent PR From Issue
+В разделе статей:
+- На desktop закрепить форму справа (sticky).
+- На mobile убрать sticky и показать форму после контента статьи.
+- Одинаковая валидация формы как на главной.
+Не менять migrations/**, billing/**, prod-config/**.
+
 
 ### Constraints
 
