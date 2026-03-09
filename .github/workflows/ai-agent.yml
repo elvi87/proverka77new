@@ -1,0 +1,15 @@
+name: AI Agent
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  codex-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: AI agent
+        run: echo "AI agent triggered"
