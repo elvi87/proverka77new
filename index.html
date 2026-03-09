@@ -23,7 +23,7 @@
     <section class="hero container card">
       <h1>Быстрая проверка физических лиц</h1>
       <p>Проверяем данные через открытые и легальные источники. Вы подтверждаете согласие на обработку персональных данных перед запуском проверки.</p>
-      <form id="searchForm" class="search-form">
+      <form id="searchForm" class="search-form" novalidate>
         <div class="grid-2">
           <label>Фамилия
             <input name="lastName" required placeholder="Иванов" />
@@ -56,6 +56,32 @@
         <button class="btn btn-primary" type="submit">Проверить за 249 ₽</button>
         <p id="formStatus" class="status"></p>
       </form>
+      <script>
+      // Client-side validation for UX
+      document.getElementById('searchForm').addEventListener('submit', function(e) {
+        const form = e.target;
+        let valid = true;
+        let firstInvalid = null;
+        // Validate required fields
+        form.querySelectorAll('[required]').forEach(function(input) {
+          if ((input.type === 'checkbox' && !input.checked) ||
+              (input.type !== 'checkbox' && !input.value)) {
+            valid = false;
+            if (!firstInvalid) firstInvalid = input;
+            input.classList.add('invalid');
+          } else {
+            input.classList.remove('invalid');
+          }
+        });
+        if (!valid) {
+          e.preventDefault();
+          document.getElementById('formStatus').textContent = 'Пожалуйста, заполните все обязательные поля и подтвердите согласие.';
+          if (firstInvalid) firstInvalid.focus();
+        } else {
+          document.getElementById('formStatus').textContent = '';
+        }
+      });
+      </script>
     </section>
 
     <section id="how" class="container section">
