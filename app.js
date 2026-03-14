@@ -57,12 +57,30 @@ function updatePrice(discount = 0) {
 
 document.getElementById('applyPromo')?.addEventListener('click', () => {
   const code = (document.getElementById('promo')?.value || '').trim().toUpperCase();
+  const promoError = document.getElementById('promoError');
   if (code === 'PROVERKA77') {
     state.discount = 50;
     updatePrice(50);
+    if (promoError) {
+      promoError.textContent = 'Промокод применён. Скидка 50 ₽.';
+      promoError.style.color = '#080';
+      promoError.style.display = '';
+    }
+  } else if (code.length > 0) {
+    state.discount = 0;
+    updatePrice(0);
+    if (promoError) {
+      promoError.textContent = 'Промокод не найден или недействителен.';
+      promoError.style.color = '#c00';
+      promoError.style.display = '';
+    }
   } else {
     state.discount = 0;
     updatePrice(0);
+    if (promoError) {
+      promoError.textContent = '';
+      promoError.style.display = 'none';
+    }
   }
 });
 
