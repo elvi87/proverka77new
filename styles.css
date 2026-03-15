@@ -55,3 +55,9 @@ input:focus, select:focus { outline: 2px solid #a7cbbf; border-color: var(--acce
   .steps { flex-direction: column; align-items: flex-start; }
   .sticky-form { position: static; }
 }
+.form-errors {
+  color: #e45a31;
+  margin-bottom: .5rem;
+  font-size: .97rem;
+  display: none;
+}
