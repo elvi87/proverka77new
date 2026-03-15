@@ -17,18 +17,52 @@
   </article>
   <aside class="card sticky-form">
     <h3>Проверить человека</h3>
-    <form id="articleForm" class="search-form compact">
-      <label>Фамилия<input required /></label>
-      <label>Имя<input required /></label>
-      <label>Отчество<input required /></label>
-      <label>Дата рождения<input type="date" required /></label>
-      <label>Регион<select required><option value="">Выберите</option><option>Москва</option><option>СПб</option></select></label>
-      <label class="consent"><input type="checkbox" required />Есть согласие на обработку данных</label>
+    <form id="articleForm" class="search-form compact" novalidate>
+      <div class="form-errors" style="display:none;color:#e45a31;margin-bottom:.5rem;"></div>
+      <label>Фамилия<input name="surname" required autocomplete="off" /></label>
+      <label>Имя<input name="name" required autocomplete="off" /></label>
+      <label>Отчество<input name="patronymic" required autocomplete="off" /></label>
+      <label>Дата рождения<input name="birthdate" type="date" required /></label>
+      <label>Регион
+        <select name="region" required>
+          <option value="">Выберите</option>
+          <option>Москва</option>
+          <option>СПб</option>
+        </select>
+      </label>
+      <label class="consent">
+        <input type="checkbox" name="consent" required />
+        Есть согласие на обработку данных
+      </label>
       <button class="btn btn-primary" type="submit">Проверить за 249 ₽</button>
     </form>
   </aside>
 </main>
 <footer class="footer"><div class="container footer-grid"><a href="#">Политика оператора</a><a href="#">Публичная оферта</a><a href="#">Бланк согласия</a><a href="articles.html">Статьи</a><a href="#">Как оплатить</a><a href="mailto:help@proverka77.online">help@proverka77.online</a></div></footer>
 <script src="app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('articleForm');
+  if (!form) return;
+  const errorBlock = form.querySelector('.form-errors');
+  form.addEventListener('submit', function (e) {
+    let errors = [];
+    // Проверка обязательных полей
+    if (!form.surname.value.trim()) errors.push('Укажите фамилию');
+    if (!form.name.value.trim()) errors.push('Укажите имя');
+    if (!form.patronymic.value.trim()) errors.push('Укажите отчество');
+    if (!form.birthdate.value) errors.push('Укажите дату рождения');
+    if (!form.region.value) errors.push('Выберите регион');
+    if (!form.consent.checked) errors.push('Необходимо согласие на обработку данных');
+    if (errors.length) {
+      e.preventDefault();
+      errorBlock.innerHTML = errors.join('<br>');
+      errorBlock.style.display = 'block';
+    } else {
+      errorBlock.style.display = 'none';
+    }
+  });
+});
+</script>
 </body>
 </html>
