@@ -19,6 +19,11 @@
       </label>
       <button class="btn" id="applyPromo">Применить</button>
       <p id="promoError" class="status" style="color:#c00;display:none;margin:8px 0 0 0;"></p>
+      <label class="consent" style="display:block;margin-top:16px;">
+        <input type="checkbox" id="checkoutConsent" required />
+        Подтверждаю согласие на обработку персональных данных для оплаты и получения отчёта.
+        <span class="error" id="checkoutConsentError" style="display:none;color:#c00;">Необходимо согласие</span>
+      </label>
       <p class="small">Доступные способы: банковская карта, ЮMoney.</p>
     </section>
     <aside class="card">
@@ -28,6 +33,23 @@
       <p class="total">К оплате: <strong id="finalPrice">249 ₽</strong></p>
       <button class="btn btn-primary" id="payBtn">Оплатить</button>
       <p id="payStatus" class="status"></p>
+      <script>
+      // UX: Require consent before payment
+      document.getElementById('payBtn')?.addEventListener('click', function(e) {
+        const consent = document.getElementById('checkoutConsent');
+        const consentError = document.getElementById('checkoutConsentError');
+        if (consent && !consent.checked) {
+          e.preventDefault();
+          if (consentError) consentError.style.display = '';
+          consent.classList.add('invalid');
+          consent.focus();
+          return false;
+        } else if (consentError) {
+          consentError.style.display = 'none';
+          consent.classList.remove('invalid');
+        }
+      });
+      </script>
     </aside>
   </div>
 </main>
