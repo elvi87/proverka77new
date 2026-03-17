@@ -40,12 +40,16 @@
         const consentError = document.getElementById('checkoutConsentError');
         if (consent && !consent.checked) {
           e.preventDefault();
-          if (consentError) consentError.style.display = '';
+          if (consentError) {
+            consentError.textContent = 'Необходимо согласие на обработку персональных данных для оплаты.';
+            consentError.style.display = '';
+          }
           consent.classList.add('invalid');
           consent.focus();
           return false;
         } else if (consentError) {
           consentError.style.display = 'none';
+          consentError.textContent = '';
           consent.classList.remove('invalid');
         }
       });
