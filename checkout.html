@@ -21,7 +21,7 @@
       <p id="promoError" class="status" style="color:#c00;display:none;margin:8px 0 0 0;"></p>
       <label class="consent" style="display:block;margin-top:16px;">
         <input type="checkbox" id="checkoutConsent" required />
-        Подтверждаю согласие на обработку персональных данных для оплаты и получения отчёта.
+        Подтверждаю согласие на обработку персональных данных для оплаты и получения отчёта. <span style="color:red">*</span>
         <span class="error" id="checkoutConsentError" style="display:none;color:#c00;">Необходимо согласие</span>
       </label>
       <p class="small">Доступные способы: банковская карта, ЮMoney.</p>
@@ -34,7 +34,7 @@
       <button class="btn btn-primary" id="payBtn">Оплатить</button>
       <p id="payStatus" class="status"></p>
       <script>
-      // UX: Require consent before payment
+      // UX: Require consent before payment, highlight invalid
       document.getElementById('payBtn')?.addEventListener('click', function(e) {
         const consent = document.getElementById('checkoutConsent');
         const consentError = document.getElementById('checkoutConsentError');
@@ -51,6 +51,17 @@
           consentError.style.display = 'none';
           consentError.textContent = '';
           consent.classList.remove('invalid');
+        }
+      });
+      // Remove error highlight on check
+      document.getElementById('checkoutConsent')?.addEventListener('change', function(e) {
+        if (e.target.checked) {
+          e.target.classList.remove('invalid');
+          const consentError = document.getElementById('checkoutConsentError');
+          if (consentError) {
+            consentError.style.display = 'none';
+            consentError.textContent = '';
+          }
         }
       });
       </script>
