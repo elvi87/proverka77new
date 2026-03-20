@@ -8,6 +8,70 @@ function setText(id, value) {
   if (el) el.textContent = value;
 }
 
+// --- Форма проверки физлиц: UX улучшения ---
+
+// Валидация формы проверки физлица
+function validatePersonForm(formId) {
+  const form = document.getElementById(formId);
+  if (!form) return false;
+
+  let valid = true;
+  let firstInvalid = null;
+
+  // Список обязательных полей (пример: ФИО, дата рождения, согласие)
+  const requiredFields = [
+    { id: 'personName', name: 'Full Name' },
+    { id: 'personBirthdate', name: 'Birth Date' },
+    { id: 'personConsent', name: 'Consent' }
+  ];
+
+  requiredFields.forEach(field => {
+    const el = document.getElementById(field.id);
+    if (!el) return;
+    if (el.type === 'checkbox') {
+      if (!el.checked) {
+        valid = false;
+        el.classList.add('input-error');
+        if (!firstInvalid) firstInvalid = el;
+      } else {
+        el.classList.remove('input-error');
+      }
+    } else {
+      if (!el.value || el.value.trim() === '') {
+        valid = false;
+        el.classList.add('input-error');
+        if (!firstInvalid) firstInvalid = el;
+      } else {
+        el.classList.remove('input-error');
+      }
+    }
+  });
+
+  if (!valid && firstInvalid) {
+    firstInvalid.focus();
+  }
+  return valid;
+}
+
+// Пример обработчика отправки формы
+function setupPersonFormValidation(formId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    if (!validatePersonForm(formId)) {
+      e.preventDefault();
+      setText('personFormError', 'Пожалуйста, заполните все обязательные поля и дайте согласие.');
+    } else {
+      setText('personFormError', '');
+    }
+  });
+}
+
+// Автоматически инициализировать в DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function () {
+  setupPersonFormValidation('personCheckForm');
+});
+
 function openModal() {
   const m = document.getElementById('authModal');
   if (m) m.hidden = false;
