@@ -61,3 +61,16 @@ input:focus, select:focus { outline: 2px solid #a7cbbf; border-color: var(--acce
   font-size: .97rem;
   display: none;
 }
+/* --- UX: Error highlighting for required fields --- */
+.input-error {
+  border: 1.5px solid #e74c3c !important;
+  background: #fff6f6 !important;
+}
+
+/* Error message styling */
+#personFormError {
+  color: #e74c3c;
+  font-size: 0.95em;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
