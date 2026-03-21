@@ -18,6 +18,23 @@
     <a class="card" href="article.html"><h3>Паспортные риски</h3><p>Почему важна верификация и совпадение данных.</p></a>
     <a class="card" href="article.html"><h3>Что делать при подозрениях</h3><p>Порядок действий и фиксация фактов.</p></a>
   </div>
+  <div class="card sticky-form" style="max-width:400px;margin:32px auto;">
+    <h3>Проверить человека</h3>
+    <form id="personFormArticles" class="search-form compact" novalidate>
+      <div id="personFormErrorArticles" class="form-errors"></div>
+      <label>ФИО
+        <input id="articlespersonName" name="personName" required autocomplete="off" />
+      </label>
+      <label>Дата рождения
+        <input id="articlespersonBirthDate" name="personBirthDate" type="date" required />
+      </label>
+      <label class="consent">
+        <input type="checkbox" id="articlespersonConsent" name="personConsent" required />
+        Есть согласие на обработку данных
+      </label>
+      <button class="btn btn-primary" type="submit">Проверить за 249 ₽</button>
+    </form>
+  </div>
 </main>
 <footer class="footer"><div class="container footer-grid"><a href="#">Политика оператора</a><a href="#">Публичная оферта</a><a href="#">Бланк согласия</a><a href="articles.html">Статьи</a><a href="#">Как оплатить</a><a href="mailto:help@proverka77.online">help@proverka77.online</a></div></footer>
 <script src="app.js"></script>
