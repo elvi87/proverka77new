@@ -8,42 +8,41 @@ function setText(id, value) {
   if (el) el.textContent = value;
 }
 
-// --- Форма проверки физлиц: UX улучшения ---
+/**
+ * --- Форма проверки физлиц: UX улучшения ---
+ * Универсальная валидация для форм проверки физлица (ФИО, дата рождения, согласие)
+ */
 
-// Валидация формы проверки физлица
-function validatePersonForm(formId) {
+// Универсальная функция валидации формы проверки физлица
+function validatePersonForm(formId, fieldPrefix = '') {
   const form = document.getElementById(formId);
   if (!form) return false;
 
   let valid = true;
   let firstInvalid = null;
 
-  // Список обязательных полей (пример: ФИО, дата рождения, согласие)
+  // Список обязательных полей (ФИО, дата рождения, согласие)
   const requiredFields = [
-    { id: 'personName', name: 'Full Name' },
-    { id: 'personBirthdate', name: 'Birth Date' },
-    { id: 'personConsent', name: 'Consent' }
+    { id: fieldPrefix + 'personName', type: 'text' },
+    { id: fieldPrefix + 'personBirthDate', type: 'date' },
+    { id: fieldPrefix + 'personConsent', type: 'checkbox' }
   ];
 
   requiredFields.forEach(field => {
     const el = document.getElementById(field.id);
     if (!el) return;
-    if (el.type === 'checkbox') {
-      if (!el.checked) {
-        valid = false;
-        el.classList.add('input-error');
-        if (!firstInvalid) firstInvalid = el;
-      } else {
-        el.classList.remove('input-error');
-      }
+    let isValid = true;
+    if (field.type === 'checkbox') {
+      isValid = el.checked;
     } else {
-      if (!el.value || el.value.trim() === '') {
-        valid = false;
-        el.classList.add('input-error');
-        if (!firstInvalid) firstInvalid = el;
-      } else {
-        el.classList.remove('input-error');
-      }
+      isValid = !!el.value.trim();
+    }
+    if (!isValid) {
+      valid = false;
+      if (!firstInvalid) firstInvalid = el;
+      el.classList.add('input-error');
+    } else {
+      el.classList.remove('input-error');
     }
   });
 
@@ -53,23 +52,34 @@ function validatePersonForm(formId) {
   return valid;
 }
 
-// Пример обработчика отправки формы
-function setupPersonFormValidation(formId) {
+// Обработчик отправки формы проверки физлица
+function setupPersonFormValidation(formId, fieldPrefix = '', errorId = 'personFormError') {
   const form = document.getElementById(formId);
   if (!form) return;
   form.addEventListener('submit', function (e) {
-    if (!validatePersonForm(formId)) {
+    if (!validatePersonForm(formId, fieldPrefix)) {
       e.preventDefault();
-      setText('personFormError', 'Пожалуйста, заполните все обязательные поля и дайте согласие.');
+      setText(errorId, 'Пожалуйста, заполните все обязательные поля и дайте согласие.');
     } else {
-      setText('personFormError', '');
+      setText(errorId, '');
     }
   });
 }
 
-// Автоматически инициализировать в DOMContentLoaded
+// Автоматически инициализировать для article.html и articles.html
 document.addEventListener('DOMContentLoaded', function () {
-  setupPersonFormValidation('personCheckForm');
+  // Для article.html
+  if (document.getElementById('personForm')) {
+    setupPersonFormValidation('personForm');
+  }
+  // Для articles.html
+  if (document.getElementById('personFormArticles')) {
+    setupPersonFormValidation('personFormArticles', 'articles', 'personFormErrorArticles');
+  }
+  // Для других форм, если есть
+  if (document.getElementById('personCheckForm')) {
+    setupPersonFormValidation('personCheckForm');
+  }
 });
 
 function openModal() {
